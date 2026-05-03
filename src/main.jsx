@@ -30,7 +30,7 @@ function imageUrl(path) {
 }
 
 function routeFromLocation() {
-  const path = window.location.pathname.replace(/^\/+/, "");
+  const path = window.location.hash.replace(/^#\/?/, "");
   return SPORTS.some((sport) => sport.id === path) ? path : "all";
 }
 
@@ -88,8 +88,8 @@ function App() {
       setRoute(routeFromLocation());
     }
 
-    window.addEventListener("popstate", handlePopState);
-    return () => window.removeEventListener("popstate", handlePopState);
+    window.addEventListener("hashchange", handlePopState);
+    return () => window.removeEventListener("hashchange", handlePopState);
   }, []);
 
   useEffect(() => {
@@ -131,7 +131,7 @@ function App() {
   }, []);
 
   function navigate(nextRoute) {
-    const nextPath = nextRoute === "all" ? "/" : `/${nextRoute}`;
+    const nextPath = nextRoute === "all" ? "#/" : `#/${nextRoute}`;
     window.history.pushState({}, "", nextPath);
     setRoute(nextRoute);
     setQuery("");
